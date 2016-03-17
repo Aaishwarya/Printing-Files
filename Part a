@@ -6,23 +6,57 @@ public class PrintFiles
     public static void main(String[] args)
     {
         File f=new File(".");
+        System.out.println("Printing list of files and directories under root directory");
+        System.out.println();
         printFiles(f);
+        System.out.println("Printing number of files under each directory");
+        printNumOfFiles(f);
     }
     public static void printFiles(File f)
+        {
+            String absolutePath=f.getAbsolutePath();
+            System.out.println("Absolute path is " +absolutePath);
+            if(f.isDirectory())
+            {
+
+                File[] paths=f.listFiles();
+                int l=paths.length;
+                for(int i=0;i<l;i++)
+                {
+                    printFiles(paths[i]);
+                }
+            }
+
+        }
+
+    public static void printNumOfFiles(File f)
     {
         String absolutePath=f.getAbsolutePath();
-        System.out.println("Absolute path is " +absolutePath);
+
         if(f.isDirectory())
         {
-            
+
             File[] paths=f.listFiles();
             int l=paths.length;
+            int count=0;
+            for(int i=0;i<l;i++)
+            {
+                if(paths[i].isDirectory()==false)
+                {
+                    count++;
+                }
+            }
+            System.out.println(count+" "+absolutePath);
             for(int i=0;i<l;i++)
             {
                 printFiles(paths[i]);
             }
         }
-        
+        else
+        {
+            System.out.println("0 "+absolutePath);
+        }
+
     }
-    
+
 }
