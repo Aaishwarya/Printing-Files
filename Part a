@@ -1,41 +1,36 @@
 import java.io.File;
 import java.lang.String;
-
 public class PrintFiles
 {
+    static int recCount=0;
     public static void main(String[] args)
     {
-        File f=new File(".");
+        File f=new File("./Online_Payments");
         System.out.println("Printing list of files and directories under root directory");
-        System.out.println();
         printFiles(f);
         System.out.println("Printing number of files under each directory");
         printNumOfFiles(f);
+        System.out.println("Printing number of files under each directory recursively");
+        recNumOfFiles(f);
     }
     public static void printFiles(File f)
+    {
+        System.out.println("Absolute path is " +f.getAbsolutePath());
+        if(f.isDirectory())
         {
-            String absolutePath=f.getAbsolutePath();
-            System.out.println("Absolute path is " +absolutePath);
-            if(f.isDirectory())
+            File[] paths=f.listFiles();
+            int l=paths.length;
+            for(int i=0;i<l;i++)
             {
-
-                File[] paths=f.listFiles();
-                int l=paths.length;
-                for(int i=0;i<l;i++)
-                {
-                    printFiles(paths[i]);
-                }
+                printFiles(paths[i]);
             }
-
         }
+    }
 
     public static void printNumOfFiles(File f)
     {
-        String absolutePath=f.getAbsolutePath();
-
         if(f.isDirectory())
         {
-
             File[] paths=f.listFiles();
             int l=paths.length;
             int count=0;
@@ -46,17 +41,65 @@ public class PrintFiles
                     count++;
                 }
             }
-            System.out.println(count+" "+absolutePath);
+            System.out.println(count+" "+f.getAbsolutePath());
             for(int i=0;i<l;i++)
             {
-                printFiles(paths[i]);
+                printNumOfFiles(paths[i]);
             }
         }
         else
         {
-            System.out.println("0 "+absolutePath);
+            System.out.println("0 "+f.getAbsolutePath());
         }
+    }
 
+        public static void recNumOfFiles(File f)
+    {
+        if(f.isDirectory())
+        {
+            File[] paths=f.listFiles();
+            int l=paths.length;
+            int count=0;
+            for(int i=0;i<l;i++)
+            {
+                if(paths[i].isDirectory()==false)
+                {
+                    count++;
+                }
+            }
+            int tCount=countTotalNumOfFiles(f);
+            System.out.println(tCount+" "+count+" "+f.getAbsolutePath());
+            recCount=0;
+            for(int i=0;i<l;i++)
+            {
+                recNumOfFiles(paths[i]);
+            }
+        }
+        else
+        {
+            System.out.println("0 "+"0 "+f.getAbsolutePath());
+        }
+    }
+
+    public static int countTotalNumOfFiles(File f)
+    {
+        if(f.isDirectory())
+        {
+            File[] paths=f.listFiles();
+            int l=paths.length;
+            for(int i=0;i<l;i++)
+            {
+                if(paths[i].isDirectory()==false)
+                {
+                    recCount++;
+                }
+                else
+                {
+                    countTotalNumOfFiles(paths[i]);
+                }
+            }
+        }
+        return recCount;
     }
 
 }
