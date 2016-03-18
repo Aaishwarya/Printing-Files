@@ -1,6 +1,15 @@
 import java.io.File;
 import java.lang.String;
-public class PrintFiles
+
+ interface toPrintFiles
+    {
+        public void printFiles(File f);
+        public void printNumOfFiles(File f);
+        public void recNumOfFiles(File f);
+        public void countTypes(File f);
+    }
+
+public class PrintFiles implements toPrintFiles
 {
     static String[] TYPES = new String[]{".jpg", ".png", ".gif", ".mp4", ".mp3", ".exe", ".psd", ".html", ".xml"};
     static int len=TYPES.length;
@@ -10,18 +19,15 @@ public class PrintFiles
     public static void main(String[] args)
     {
         File f=new File(".");
+        PrintFiles obj=new PrintFiles();
         System.out.println("Printing list of files and directories under root directory");
-        printFiles(f);
-        System.out.println("");
+        obj.printFiles(f);
         System.out.println("Printing number of files under each directory");
-        printNumOfFiles(f);
-        System.out.println("");
+        obj.printNumOfFiles(f);
         System.out.println("Printing number of files under each directory recursively");
-        recNumOfFiles(f);
-        System.out.println("");
+        obj.recNumOfFiles(f);
         System.out.println("Printing number of each type specified");
-        countTypes(f);
-        System.out.println("");
+        obj.countTypes(f);
         System.out.println("Number of files of each specified type:");
         for(int i=0;i<len;i++)
         {
@@ -35,7 +41,7 @@ public class PrintFiles
         }
 
     }
-    public static void printFiles(File f)
+    public void printFiles(File f)
     {
         System.out.println("Absolute path is " +f.getAbsolutePath());
         if(f.isDirectory())
@@ -49,7 +55,7 @@ public class PrintFiles
         }
     }
 
-    public static void printNumOfFiles(File f)
+    public void printNumOfFiles(File f)
     {
         if(f.isDirectory())
         {
@@ -75,7 +81,7 @@ public class PrintFiles
         }
     }
 
-    public static void recNumOfFiles(File f)
+    public void recNumOfFiles(File f)
     {
         if(f.isDirectory())
         {
@@ -103,7 +109,7 @@ public class PrintFiles
         }
     }
 
-    public static int countTotalNumOfFiles(File f)
+    public int countTotalNumOfFiles(File f)
     {
         if(f.isDirectory())
         {
@@ -123,7 +129,7 @@ public class PrintFiles
         }
         return recCount;
     }
-    public static void countTypes(File f)
+    public void countTypes(File f)
     {
         if(f.isDirectory())
         {
@@ -147,7 +153,7 @@ public class PrintFiles
         }
     }
 
-    public static void checkTypes(File f)
+    public void checkTypes(File f)
     {
         for(int i=0;i<len;i++)
         {
