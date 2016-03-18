@@ -5,21 +5,33 @@ public class PrintFiles
     static String[] TYPES = new String[]{".jpg", ".png", ".gif", ".mp4", ".mp3", ".exe", ".psd", ".html", ".xml"};
     static int len=TYPES.length;
     static int countOfTypes[]=new int[len];
+    static long sizeOfTypes[]=new long[len];
     static int recCount=0;
     public static void main(String[] args)
     {
-        File f=new File("./Online_Payments");
+        File f=new File(".");
         System.out.println("Printing list of files and directories under root directory");
         printFiles(f);
+        System.out.println("");
         System.out.println("Printing number of files under each directory");
         printNumOfFiles(f);
+        System.out.println("");
         System.out.println("Printing number of files under each directory recursively");
         recNumOfFiles(f);
+        System.out.println("");
         System.out.println("Printing number of each type specified");
         countTypes(f);
+        System.out.println("");
+        System.out.println("Number of files of each specified type:");
         for(int i=0;i<len;i++)
         {
             System.out.println("TYPE "+TYPES[i]+" :"+countOfTypes[i]);
+        }
+        System.out.println("");
+        System.out.println("Size of files of each specified type:");
+        for(int i=0;i<len;i++)
+        {
+            System.out.println("TYPE "+TYPES[i]+" :"+sizeOfTypes[i]);
         }
 
     }
@@ -142,6 +154,7 @@ public class PrintFiles
             if((f.toString()).toLowerCase().endsWith(TYPES[i]))
             {
                 countOfTypes[i]++;
+                sizeOfTypes[i]=sizeOfTypes[i]+f.getTotalSpace();
             }
         }
     }
