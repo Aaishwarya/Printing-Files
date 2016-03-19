@@ -1,3 +1,7 @@
+/**
+ *This program is used to recursively traverse through the specified directory and list the files under it and their count and sizes.
+ */
+
 import java.io.File; //imports File class from java.io
 import java.lang.String; //imports String class from java.lang package
 
@@ -16,6 +20,7 @@ interface toListFiles
         public void toCountTypes(File f);
     }
 
+//class
 public class TraverseDirectory implements toListFiles
 {
     //static fields
@@ -44,11 +49,16 @@ public class TraverseDirectory implements toListFiles
         System.out.println("Sizes(in bytes) of files of each specified type:");
         for(int i=0;i<len;i++)
         {
-            System.out.println("TYPE "+TYPES[i]+" - "+sizeOfTypes[i]);
+            System.out.printf("TYPE "+TYPES[i]+" - %,d %n",sizeOfTypes[i]);
         }
+        System.out.println("");
         long endTime=System.currentTimeMillis();
+
+        //Prints total time taken for excecution
         System.out.println("Total time taken by the program is: "+(endTime-startTime));
     }
+
+    //Method appraises and traverses the files and directories in the provided directory or file
     public void toCountRecNumOfFiles(File f)
     {
         if(f.isDirectory())
@@ -77,6 +87,8 @@ public class TraverseDirectory implements toListFiles
         }
     }
 
+
+    //method to recursively count the files
     public int toCountTotalNumOfFiles(File f)
     {
         if(f.isDirectory())
@@ -97,6 +109,9 @@ public class TraverseDirectory implements toListFiles
         }
         return recCount;
     }
+
+
+    //Method to count number and size of each specified file type
     public void toCountTypes(File f)
     {
         if(f.isDirectory())
@@ -105,14 +120,7 @@ public class TraverseDirectory implements toListFiles
             int l=paths.length;
             for(int i=0;i<l;i++)
             {
-                if(paths[i].isDirectory()==false)
-                {
-                    toCheckTypes(paths[i]);
-                }
-                else
-                {
                     toCountTypes(paths[i]);
-                }
             }
         }
         else
@@ -121,6 +129,8 @@ public class TraverseDirectory implements toListFiles
         }
     }
 
+
+    //Check and compare the file types
     public void toCheckTypes(File f)
     {
         for(int i=0;i<len;i++)
