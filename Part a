@@ -1,61 +1,55 @@
-import java.io.File;
-import java.lang.String;
+import java.io.File; //imports File class from java.io
+import java.lang.String; //imports String class from java.lang package
 
- interface toPrintFiles
+interface toListFiles
     {
-        public void printFiles(File f);
-        public void printNumOfFiles(File f);
-        public void recNumOfFiles(File f);
-        public void countTypes(File f);
+        /**
+         *This method prints all the files and sub-directories under the current directory and specifies their identity (i.e.Directory (d) or file(f)).
+         *This method also prints the count of number files under a directory, both immediately and totally
+         *Format: Total number of files under directory(or file)  Number of files immediately under directory (or file)  Absolute path of the file or directory
+         */
+        public void toCountRecNumOfFiles(File f);
+
+        /**
+         *This method counts the number of files of the specified type as well as the size (in bytes) each type of file occupies
+         */
+        public void toCountTypes(File f);
     }
 
-public class PrintFiles implements toPrintFiles
+public class TraverseDirectory implements toListFiles
 {
+    //static fields
     static String[] TYPES = new String[]{".jpg", ".png", ".gif", ".mp4", ".mp3", ".exe", ".psd", ".html", ".xml"};
     static int len=TYPES.length;
     static int countOfTypes[]=new int[len];
     static long sizeOfTypes[]=new long[len];
     static int recCount=0;
+
+    //main method
     public static void main(String[] args)
     {
+        long startTime=System.currentTimeMillis();
         File f=new File(".");
-        PrintFiles obj=new PrintFiles();
-        System.out.println("Printing list of files and directories under root directory");
-        obj.printFiles(f);
-        System.out.println("Printing number of files under each directory");
-        obj.printNumOfFiles(f);
-        System.out.println("Printing number of files under each directory recursively");
-        obj.recNumOfFiles(f);
-        System.out.println("Printing number of each type specified");
-        obj.countTypes(f);
+        TraverseDirectory obj=new TraverseDirectory();
+        System.out.println("Printing details about identity of a file or directory, and number of files under them");
+        obj.toCountRecNumOfFiles(f);
+        System.out.println("Printing number and size of each type specified");
+        obj.toCountTypes(f);
         System.out.println("Number of files of each specified type:");
         for(int i=0;i<len;i++)
         {
-            System.out.println("TYPE "+TYPES[i]+" :"+countOfTypes[i]);
+            System.out.println("TYPE "+TYPES[i]+" - "+countOfTypes[i]);
         }
         System.out.println("");
-        System.out.println("Size of files of each specified type:");
+        System.out.println("Sizes(in bytes) of files of each specified type:");
         for(int i=0;i<len;i++)
         {
-            System.out.println("TYPE "+TYPES[i]+" :"+sizeOfTypes[i]);
+            System.out.println("TYPE "+TYPES[i]+" - "+sizeOfTypes[i]);
         }
-
+        long endTime=System.currentTimeMillis();
+        System.out.println("Total time taken by the program is: "+(endTime-startTime));
     }
-    public void printFiles(File f)
-    {
-        System.out.println("Absolute path is " +f.getAbsolutePath());
-        if(f.isDirectory())
-        {
-            File[] paths=f.listFiles();
-            int l=paths.length;
-            for(int i=0;i<l;i++)
-            {
-                printFiles(paths[i]);
-            }
-        }
-    }
-
-    public void printNumOfFiles(File f)
+    public void toCountRecNumOfFiles(File f)
     {
         if(f.isDirectory())
         {
@@ -69,47 +63,21 @@ public class PrintFiles implements toPrintFiles
                     count++;
                 }
             }
-            System.out.println(count+" "+f.getAbsolutePath());
-            for(int i=0;i<l;i++)
-            {
-                printNumOfFiles(paths[i]);
-            }
-        }
-        else
-        {
-            System.out.println("0 "+f.getAbsolutePath());
-        }
-    }
-
-    public void recNumOfFiles(File f)
-    {
-        if(f.isDirectory())
-        {
-            File[] paths=f.listFiles();
-            int l=paths.length;
-            int count=0;
-            for(int i=0;i<l;i++)
-            {
-                if(paths[i].isDirectory()==false)
-                {
-                    count++;
-                }
-            }
-            int tCount=countTotalNumOfFiles(f);
-            System.out.println(tCount+" "+count+" "+f.getAbsolutePath());
+            int tCount=toCountTotalNumOfFiles(f);
+            System.out.println(tCount+" "+count+" d "+f.getAbsolutePath());
             recCount=0;
             for(int i=0;i<l;i++)
             {
-                recNumOfFiles(paths[i]);
+                toCountRecNumOfFiles(paths[i]);
             }
         }
         else
         {
-            System.out.println("0 "+"0 "+f.getAbsolutePath());
+            System.out.println("0 0 f "+f.getAbsolutePath());
         }
     }
 
-    public int countTotalNumOfFiles(File f)
+    public int toCountTotalNumOfFiles(File f)
     {
         if(f.isDirectory())
         {
@@ -123,13 +91,13 @@ public class PrintFiles implements toPrintFiles
                 }
                 else
                 {
-                    countTotalNumOfFiles(paths[i]);
+                    toCountTotalNumOfFiles(paths[i]);
                 }
             }
         }
         return recCount;
     }
-    public void countTypes(File f)
+    public void toCountTypes(File f)
     {
         if(f.isDirectory())
         {
@@ -139,21 +107,21 @@ public class PrintFiles implements toPrintFiles
             {
                 if(paths[i].isDirectory()==false)
                 {
-                    checkTypes(paths[i]);
+                    toCheckTypes(paths[i]);
                 }
                 else
                 {
-                    countTypes(paths[i]);
+                    toCountTypes(paths[i]);
                 }
             }
         }
         else
         {
-            checkTypes(f);
+            toCheckTypes(f);
         }
     }
 
-    public void checkTypes(File f)
+    public void toCheckTypes(File f)
     {
         for(int i=0;i<len;i++)
         {
